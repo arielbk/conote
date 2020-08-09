@@ -1,0 +1,13 @@
+{
+  "scripts": {
+    "dev": "concurrently \"nodemon index.js\" \"npm start --prefix client\""
+  },
+  "dependencies": {
+    "express": "^4.17.1",
+    "socket.io": "^2.3.0"
+  },
+  "devDependencies": {
+    "concurrently": "^5.3.0",
+    "nodemon": "^2.0.4"
+  }
+}
