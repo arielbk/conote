@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import io from "socket.io-client";
 import styled from "styled-components";
 import { FiClipboard } from "react-icons/fi";
+import { diffChars } from "diff";
 
 const socket = io();
 
@@ -57,6 +58,7 @@ const Container = styled.div<{ isCopied: boolean }>`
   }
 
   textarea {
+    resize: vertical;
     width: 100%;
     height: auto;
     border: 1px solid #ccc;
@@ -78,19 +80,47 @@ function App() {
   // if the text has just been copied to clipboard
   const [isCopied, setIsCopied] = useState<boolean>(false);
 
-  // if the text changes here, transmit this change
+  // initialize socket listeners
   useEffect(() => {
-    socket.emit("text", text);
+    // log any messages for now
+    socket.on("message", (message: string) => {
+      console.log(message);
+    });
+
+    // apply any changes received from sockets
+    socket.on("diff", (diff: any) => {
+      console.count("diff");
+      let newText = "";
+      diff.forEach(
+        ({
+          count,
+          added,
+          removed,
+          value,
+        }: {
+          // todo: define a type for these diffs
+          count: number;
+          added: boolean;
+          removed: boolean;
+          value: string;
+        }) => {
+          if (!removed) newText += value;
+        }
+      );
+      setText(newText);
+    });
+  }, []);
+
+  const handleTextChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    // send diff to other users
+    const newText = e.target.value;
+    const diff = diffChars(text, newText);
+    socket.emit("diff", diff);
+    // set current change
+    setText(newText);
+    // reset copied flag
     setIsCopied(false);
-  }, [text]);
-
-  // log any messages for now
-  socket.on("message", (message: string) => {
-    console.log(message);
-  });
-
-  // apply any changes received from sockets
-  socket.on("text", (newText: string) => setText(newText));
+  };
 
   const handleCopy = () => {
     navigator.clipboard
@@ -109,7 +139,7 @@ function App() {
           <FiClipboard />
         </div>
       </header>
-      <textarea value={text} onChange={(e) => setText(e.target.value)} />
+      <textarea value={text} onChange={handleTextChange} />
     </Container>
   );
 }

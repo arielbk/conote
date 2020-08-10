@@ -12,11 +12,12 @@ app.use(express.static(path.join(__dirname, 'client', 'build')));
 
 // Web sockets
 io.on('connection', socket => {
-  socket.emit('message', 'New user joined');
+  socket.emit('message', `New user joined: ${socket.id}`);
 
   // broadcast any text changes to other users
-  socket.on('text', text => {
-    socket.broadcast.emit('text', text);
+  socket.on('diff', diff => {
+    console.log('diff emitted');
+    socket.broadcast.emit('diff', diff);
   });
 });
 
