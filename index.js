@@ -2,6 +2,7 @@ const http = require('http');
 const express = require('express');
 const path = require('path');
 const socketio = require('socket.io');
+const { userJoin, getNoteUsers, getCurrentUser } = require('./utils/users');
 
 const app = express();
 const server = http.createServer(app);
@@ -12,13 +13,26 @@ app.use(express.static(path.join(__dirname, 'client', 'build')));
 
 // Web sockets
 io.on('connection', socket => {
-  socket.emit('message', `New user joined: ${socket.id}`);
+
+  // user joins or creates a note
+  socket.on('joinNote', note => {
+    console.log('joining note', note);
+
+    // add the new user
+    const user = userJoin(socket.id, note);
+    socket.join(note);
+
+    // broadcast the note users
+    io.to(note).emit('users', getNoteUsers(note));
+  });
 
   // broadcast any text changes to other users
   socket.on('diff', diff => {
-    console.log('diff emitted');
-    socket.broadcast.emit('diff', diff);
+    const user = getCurrentUser(socket.id);
+    console.log(user);
+    if (user) socket.broadcast.to(user.note).emit('diff', diff);
   });
+
 });
 
 const PORT = process.env.PORT || 8080;

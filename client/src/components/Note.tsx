@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import io from "socket.io-client";
+import { useParams, Link } from "react-router-dom";
 import styled from "styled-components";
 import { FiClipboard } from "react-icons/fi";
 import { diffChars } from "diff";
@@ -16,6 +17,10 @@ const Container = styled.div<{ isCopied: boolean }>`
     display: flex;
     justify-content: space-between;
     align-items: center;
+
+    a {
+      text-decoration: none;
+    }
 
     h1 {
       font-weight: 300;
@@ -60,7 +65,7 @@ const Container = styled.div<{ isCopied: boolean }>`
   textarea {
     resize: vertical;
     width: 100%;
-    height: auto;
+    height: 70vh;
     border: 1px solid #ccc;
     border-radius: 10px;
     padding: 2rem;
@@ -74,7 +79,10 @@ const Container = styled.div<{ isCopied: boolean }>`
   }
 `;
 
-function App() {
+export default function Note() {
+  // the id of the current note
+  const { id } = useParams();
+
   // current text value of the note
   const [text, setText] = useState<string>("");
   // if the text has just been copied to clipboard
@@ -87,9 +95,11 @@ function App() {
       console.log(message);
     });
 
+    // join the current note connection
+    socket.emit("joinNote", id);
+
     // apply any changes received from sockets
     socket.on("diff", (diff: any) => {
-      console.count("diff");
       let newText = "";
       diff.forEach(
         ({
@@ -109,7 +119,9 @@ function App() {
       );
       setText(newText);
     });
-  }, []);
+
+    // todo: return function for the user to leave
+  }, [id]);
 
   const handleTextChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     // send diff to other users
@@ -134,7 +146,9 @@ function App() {
   return (
     <Container isCopied={isCopied}>
       <header>
-        <h1>Conote</h1>
+        <Link to="/">
+          <h1>conote</h1>
+        </Link>
         <div id="copy-button" onClick={handleCopy}>
           <FiClipboard />
         </div>
@@ -143,5 +157,3 @@ function App() {
     </Container>
   );
 }
-
-export default App;
