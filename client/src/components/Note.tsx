@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import io from "socket.io-client";
 import { useParams, Link } from "react-router-dom";
 import styled from "styled-components";
-import { FiClipboard } from "react-icons/fi";
+import { FiClipboard, FiShare2 } from "react-icons/fi";
 import { diffChars } from "diff";
 
 const socket = io();
@@ -25,10 +25,16 @@ const Container = styled.div<{ isCopied: boolean }>`
     h1 {
       font-weight: 300;
       font-size: 52px;
-      color: #555;
+      color: #ccc;
+      transition: 0.3s;
+      &:hover {
+        color: #555;
+      }
     }
 
-    #copy-button {
+    button {
+      background: #fff;
+      border: none;
       position: relative;
       border-radius: 50%;
       padding: 1rem;
@@ -36,6 +42,7 @@ const Container = styled.div<{ isCopied: boolean }>`
       color: #ccc;
       cursor: pointer;
       transition: 0.3s;
+      outline: none;
 
       /* tooltip */
       &::after {
@@ -134,7 +141,7 @@ export default function Note() {
     setIsCopied(false);
   };
 
-  const handleCopy = () => {
+  const handleCopyText = () => {
     navigator.clipboard
       .writeText(text)
       .then(() => {
@@ -143,14 +150,23 @@ export default function Note() {
       .catch((err) => console.error(err));
   };
 
+  const handleCopyLink = () => {
+    navigator.clipboard.writeText(`${window.location.host}/note/${id}`);
+  };
+
   return (
     <Container isCopied={isCopied}>
       <header>
         <Link to="/">
           <h1>conote</h1>
         </Link>
-        <div id="copy-button" onClick={handleCopy}>
-          <FiClipboard />
+        <div>
+          <button onClick={handleCopyText}>
+            <FiClipboard />
+          </button>
+          <button onClick={handleCopyLink}>
+            <FiShare2 />
+          </button>
         </div>
       </header>
       <textarea value={text} onChange={handleTextChange} />
