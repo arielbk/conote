@@ -11,6 +11,11 @@ const io = socketio(server);
 // serve static build
 app.use(express.static(path.join(__dirname, 'client', 'build')));
 
+// route all requests to client routing
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'client', 'build', 'index.html'));
+});
+
 // Web sockets
 io.on('connection', socket => {
 

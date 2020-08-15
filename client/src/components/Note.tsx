@@ -79,6 +79,7 @@ const Container = styled.div<{ isCopied: boolean }>`
     font-family: Arial, Helvetica, sans-serif;
     font-size: 18px;
     color: #777;
+    line-height: 2;
 
     :focus {
       outline-color: #555;
