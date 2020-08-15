@@ -107,26 +107,31 @@ export default function Note() {
     socket.emit("joinNote", id);
 
     // apply any changes received from sockets
-    socket.on("diff", (diff: any) => {
-      let newText = "";
-      diff.forEach(
-        ({
-          count,
-          added,
-          removed,
-          value,
-        }: {
-          // todo: define a type for these diffs
-          count: number;
-          added: boolean;
-          removed: boolean;
-          value: string;
-        }) => {
-          if (!removed) newText += value;
-        }
-      );
+    socket.on("update", (newText: string) => {
       setText(newText);
     });
+
+    // // apply any changes received from sockets
+    // socket.on("diff", (diff: any) => {
+    //   let newText = "";
+    //   diff.forEach(
+    //     ({
+    //       count,
+    //       added,
+    //       removed,
+    //       value,
+    //     }: {
+    //       // todo: define a type for these diffs
+    //       count: number;
+    //       added: boolean;
+    //       removed: boolean;
+    //       value: string;
+    //     }) => {
+    //       if (!removed) newText += value;
+    //     }
+    //   );
+    //   setText(newText);
+    // });
 
     // todo: return function for the user to leave
   }, [id]);
@@ -135,7 +140,7 @@ export default function Note() {
     // send diff to other users
     const newText = e.target.value;
     const diff = diffChars(text, newText);
-    socket.emit("diff", diff);
+    socket.emit("diff", { diff, id });
     // set current change
     setText(newText);
     // reset copied flag
