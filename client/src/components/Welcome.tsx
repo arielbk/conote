@@ -19,6 +19,7 @@ const Container = styled.div`
       font-weight: 300;
       font-size: 52px;
       color: #555;
+      margin: 1.5rem 0;
     }
   }
 `;
@@ -32,6 +33,9 @@ const StyledButton = styled.button`
   font-size: 24px;
   color: #777;
   width: 212px;
+  :focus {
+    outline-color: #555;
+  }
 `;
 
 const StyledInput = styled.input`
@@ -47,6 +51,9 @@ const StyledInput = styled.input`
   width: 212px;
   ::placeholder {
     color: #ccc;
+  }
+  :focus {
+    outline-color: #555;
   }
 `;
 
