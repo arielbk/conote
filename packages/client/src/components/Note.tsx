@@ -132,8 +132,8 @@ export default function Note() {
   const handleTextChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     // send diff to other users
     const newText = e.target.value;
-    const diff = diffChars(text, newText);
-    socket.emit("diff", { diff, id });
+    const diffs = diffChars(text, newText);
+    socket.emit("diff", { diffs, id });
     // set current change
     setText(newText);
     // reset copied flag

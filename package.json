@@ -7,7 +7,7 @@
   "scripts": {
     "server": "yarn workspace server start",
     "client": "HOST=0.0.0.0 yarn workspace client start",
-    "start": "concurrently \"yarn client \" \"yarn server\""
+    "start": "concurrently --kill-others-on-fail \"yarn client \" \"yarn server\""
   },
   "devDependencies": {
     "lerna": "^3.22.1",
