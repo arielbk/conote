@@ -4,7 +4,7 @@
   "scripts": {
     "build": "tsc",
     "start": "nodemon --exec ts-node ./index.ts",
-    "serve": "node ./index.js"
+    "serve": "pm2 start index.js --name conote"
   },
   "dependencies": {
     "express": "^4.17.1",
