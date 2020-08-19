@@ -41,4 +41,5 @@ jobs:
             cd ~/var/www/conote
             git pull origin master
             yarn install --production
+            yarn build
             pm2 restart conote
