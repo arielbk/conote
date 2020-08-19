@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import { useHistory } from "react-router-dom";
 import uid from "uid";
+import Footer from "./Footer";
 
 const Container = styled.div`
   font-family: Arial, Helvetica, sans-serif;
@@ -24,6 +25,10 @@ const Container = styled.div`
   }
 `;
 
+const StyledForm = styled.form`
+  margin-bottom: 5rem;
+`;
+
 const StyledButton = styled.button`
   margin: 1rem 0;
   padding: 1rem 2rem;
@@ -33,8 +38,12 @@ const StyledButton = styled.button`
   font-size: 24px;
   color: #777;
   width: 212px;
+  transition: 0.3s;
   :focus {
     outline-color: #555;
+  }
+  :hover {
+    color: #555;
   }
 `;
 
@@ -49,11 +58,14 @@ const StyledInput = styled.input`
   font-size: 24px;
   color: #777;
   width: 212px;
-  ::placeholder {
-    color: #ccc;
+  :placeholder {
+    color: #777;
   }
   :focus {
     outline-color: #555;
+  }
+  :placeholder:hover {
+    color: #555;
   }
 `;
 
@@ -75,14 +87,16 @@ function Welcome() {
       <header>
         <h1>conote</h1>
       </header>
-      <StyledButton onClick={handleCreateNote}>Create a note</StyledButton>
-      <form onSubmit={handleJoinNote}>
+      <StyledForm onSubmit={handleJoinNote}>
+        <StyledButton onClick={handleCreateNote}>Create a note</StyledButton>
         <StyledInput
           placeholder="Note code"
           value={codeInput}
           onChange={(e) => setCodeInput(e.target.value)}
+          onBlur={(e) => setCodeInput("")}
         />
-      </form>
+      </StyledForm>
+      <Footer />
     </Container>
   );
 }

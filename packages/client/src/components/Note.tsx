@@ -4,6 +4,7 @@ import { useParams, Link } from "react-router-dom";
 import styled from "styled-components";
 import { FiClipboard, FiShare2 } from "react-icons/fi";
 import { diffChars } from "diff";
+import Footer from "./Footer";
 
 const socket = io();
 
@@ -45,7 +46,6 @@ const Container = styled.div`
     font-size: 18px;
     color: #777;
     line-height: 2;
-    transition: 1s;
 
     :focus {
       outline-color: #555;
@@ -180,6 +180,7 @@ export default function Note() {
         </div>
       </header>
       <textarea ref={textareaRef} value={text} onChange={handleTextChange} />
+      <Footer />
     </Container>
   );
 }
