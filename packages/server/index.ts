@@ -18,11 +18,11 @@ interface Diff {
 }
 
 // serve static build
-app.use(express.static(path.join(__dirname, "client", "build")));
+app.use(express.static(path.join(__dirname, "..", "client", "build")));
 
 // route all requests to client routing
 app.get("*", (req: Express.Request, res: any) => {
-  res.sendFile(path.join(__dirname, "client", "build", "index.html"));
+  res.sendFile(path.join(__dirname, "..", "client", "build", "index.html"));
 });
 
 // Web sockets

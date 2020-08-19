@@ -5,9 +5,11 @@
     "packages/*"
   ],
   "scripts": {
+    "build": "yarn lerna run build",
     "server": "yarn workspace server start",
     "client": "HOST=0.0.0.0 yarn workspace client start",
-    "start": "concurrently --kill-others-on-fail \"yarn client \" \"yarn server\""
+    "dev": "concurrently --kill-others-on-fail \"yarn client \" \"yarn server\"",
+    "serve": "yarn workspace server serve"
   },
   "devDependencies": {
     "lerna": "^3.22.1",

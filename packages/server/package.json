@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "scripts": {
     "build": "tsc",
-    "start": "nodemon --exec ts-node ./index.ts"
+    "start": "nodemon --exec ts-node ./index.ts",
+    "serve": "node ./index.js"
   },
   "dependencies": {
     "express": "^4.17.1",
