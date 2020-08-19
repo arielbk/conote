@@ -38,7 +38,7 @@ jobs:
           username: ${{ secrets.SSH_USERNAME }}
           key: ${{ secrets.SSH_KEY }}
           script: |
-            cd ~/var/www/conote
+            cd /var/www/conote
             git pull origin master
             yarn install --production
             yarn build
