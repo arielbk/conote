@@ -6,28 +6,23 @@ on:
       - master
 
 jobs:
-  # test:
-  #   runs-on: ubuntu-latest
+  test:
+    runs-on: ubuntu-latest
 
-  #   strategy:
-  #     matrix:
-  #       node-version: [8.x, 10.x, 12.x]
-
-  #   steps:
-  #     - uses: actions/checkout@v2
-  #     - name: Use Node.js ${{ matrix.node-version }}
-  #       uses: actions/setup-node@v1
-  #       with:
-  #         node-version: ${{ matrix.node-version }}
-  #     - name: npm install and test
-  #       run: |
-  #         npm install
-  #         npm test
-  #       env:
-  #         CI: true
+    steps:
+      - uses: actions/checkout@v2
+      - name: install deps
+        run: |
+          yarn install
+      - name: run cypress
+        uses: cypress-io/github-actions@v2
+        with:
+          start: yarn dev
+          wait-on: http://localhost:3000
+          command: yarn lerna run e2e
 
   deploy:
-    # needs: [test]
+    needs: [test]
     runs-on: ubuntu-latest
 
     steps:
@@ -39,6 +34,7 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           script: |
             cd /var/www/conote
+            sudo git reset --hard
             sudo git pull origin master
             sudo yarn install
             sudo yarn build
