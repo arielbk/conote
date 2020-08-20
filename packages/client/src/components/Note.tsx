@@ -46,6 +46,7 @@ const Container = styled.div`
     font-size: 18px;
     color: #777;
     line-height: 2;
+    -webkit-appearance: none;
 
     :focus {
       outline-color: #555;

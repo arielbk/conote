@@ -26,7 +26,6 @@ const Container = styled.div`
 export default function Footer() {
   return (
     <Container>
-      Work on text together.
       <a href="https://arielbk.com">arielbk.com</a>
     </Container>
   );

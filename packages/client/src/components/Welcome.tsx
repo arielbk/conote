@@ -37,41 +37,50 @@ const StyledButton = styled.button`
   border-radius: 8px;
   font-size: 24px;
   color: #777;
-  width: 212px;
+  min-width: 212px;
+  width: 38%;
   transition: 0.3s;
   :focus {
     outline-color: #555;
   }
   :hover {
     color: #555;
+    cursor: pointer;
   }
 `;
 
-const StyledInput = styled.input`
+const StyledInput = styled.input<{ isFocused: boolean; isHover: boolean }>`
   display: block;
-  text-align: center;
+  text-align: ${(props) => (props.isFocused ? "left" : "center")};
   margin: 1rem auto;
   padding: 1rem 2rem;
   background: #fff;
   border: 1px solid #ddd;
   border-radius: 8px;
   font-size: 24px;
-  color: #777;
-  width: 212px;
-  :placeholder {
-    color: #777;
+  color: #555;
+  min-width: 212px;
+  width: 38%;
+  -webkit-appearance: none;
+  outline-color: #555;
+  transition: 0.3s;
+  :hover {
+    cursor: pointer;
   }
-  :focus {
-    outline-color: #555;
-  }
-  :placeholder:hover {
-    color: #555;
+  &::placeholder {
+    color: ${(props) => {
+      if (props.isFocused) return "#eee";
+      if (props.isHover) return "#555";
+      return "#777";
+    }};
   }
 `;
 
 function Welcome() {
   const history = useHistory();
   const [codeInput, setCodeInput] = useState("");
+  const [isInputFocus, setIsInputFocus] = useState<boolean>(false);
+  const [isInputHover, setIsInputHover] = useState<boolean>(false);
 
   const handleCreateNote = () => {
     const id = uid(6);
@@ -88,12 +97,22 @@ function Welcome() {
         <h1>conote</h1>
       </header>
       <StyledForm onSubmit={handleJoinNote}>
-        <StyledButton onClick={handleCreateNote}>Create a note</StyledButton>
+        <StyledButton onClick={handleCreateNote} type="button">
+          Create a note
+        </StyledButton>
         <StyledInput
           placeholder="Note code"
           value={codeInput}
+          isFocused={isInputFocus}
+          isHover={isInputHover}
           onChange={(e) => setCodeInput(e.target.value)}
-          onBlur={(e) => setCodeInput("")}
+          onFocus={(e) => setIsInputFocus(true)}
+          onBlur={(e) => {
+            setCodeInput("");
+            setIsInputFocus(false);
+          }}
+          onMouseEnter={(e) => setIsInputHover(true)}
+          onMouseLeave={(e) => setIsInputHover(false)}
         />
       </StyledForm>
       <Footer />
