@@ -96,11 +96,16 @@ function Welcome() {
       <header>
         <h1>conote</h1>
       </header>
-      <StyledForm onSubmit={handleJoinNote}>
-        <StyledButton onClick={handleCreateNote} type="button">
+      <StyledForm data-cy="code-form" onSubmit={handleJoinNote}>
+        <StyledButton
+          data-cy="create-button"
+          onClick={handleCreateNote}
+          type="button"
+        >
           Create a note
         </StyledButton>
         <StyledInput
+          data-cy="code-input"
           placeholder="Note code"
           value={codeInput}
           isFocused={isInputFocus}

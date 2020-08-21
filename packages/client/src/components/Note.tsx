@@ -180,7 +180,12 @@ export default function Note() {
           </TopButton>
         </div>
       </header>
-      <textarea ref={textareaRef} value={text} onChange={handleTextChange} />
+      <textarea
+        data-cy="note-input"
+        ref={textareaRef}
+        value={text}
+        onChange={handleTextChange}
+      />
       <Footer />
     </Container>
   );
