@@ -162,6 +162,7 @@ export default function Note() {
         </Link>
         <div>
           <TopButton
+            data-cy="copy-note"
             onClick={handleCopyText}
             isDone={isTextCopied}
             tooltip="Copy note"
@@ -170,6 +171,7 @@ export default function Note() {
             <FiClipboard />
           </TopButton>
           <TopButton
+            data-cy="copy-link"
             onClick={handleCopyLink}
             // isDone={linkCopied}
             isDone={false}
